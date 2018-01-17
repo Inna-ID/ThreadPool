@@ -6,3 +6,11 @@ D:\_ФИТР_\4Курс(7)\Курсач\ThreadPools\threadPoll\threadPoll\obj\De
 D:\_ФИТР_\4Курс(7)\Курсач\ThreadPools\threadPoll\threadPoll\obj\Debug\threadPoll.exe
 D:\_ФИТР_\4Курс(7)\Курсач\ThreadPools\threadPoll\threadPoll\obj\Debug\threadPoll.pdb
 D:\_ФИТР_\4Курс(7)\Курсач\ThreadPools\threadPoll\threadPoll\obj\Debug\threadPoll.csproj.ResolveComReference.cache
+D:\C#\ThreadPool_CourseProject\threadPoll\bin\Debug\threadPoll.exe.config
+D:\C#\ThreadPool_CourseProject\threadPoll\bin\Debug\threadPoll.exe
+D:\C#\ThreadPool_CourseProject\threadPoll\bin\Debug\threadPoll.pdb
+D:\C#\ThreadPool_CourseProject\threadPoll\obj\Debug\threadPoll.csprojResolveAssemblyReference.cache
+D:\C#\ThreadPool_CourseProject\threadPoll\obj\Debug\threadPoll.csproj.ResolveComReference.cache
+D:\C#\ThreadPool_CourseProject\threadPoll\obj\Debug\threadPoll.csproj.CoreCompileInputs.cache
+D:\C#\ThreadPool_CourseProject\threadPoll\obj\Debug\threadPoll.exe
+D:\C#\ThreadPool_CourseProject\threadPoll\obj\Debug\threadPoll.pdb
