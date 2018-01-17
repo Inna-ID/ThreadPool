@@ -31,7 +31,7 @@ namespace threadPoll
             //    Console.WriteLine("Выполняется поток 1");
             //    Thread.Sleep(200);
             //}
-            Worker1 wr1 = new Worker1();
+           // Worker1 wr1 = new Worker1();
             Worker2 wr2 = new Worker2();
 
 
@@ -48,7 +48,7 @@ namespace threadPoll
                 {
                     case '1':
                        // wr1.ThreadCounter();
-                        wr2.ThreadCounter();
+                        wr2.CreateThread();
                         break;
                     case '2':
                        // wr1.CheckStatus();
