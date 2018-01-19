@@ -4,19 +4,18 @@ using System.Threading;
 using Microsoft.Office.Interop.Word;
 
 namespace threadPoll
-{    
-    class Worker2
+{
+    class ThreadsPool
     {
         private Thread _thread;
         private Application app;
         private Document document;
         private bool IsApplicaionClosed = false;
         private object path;
-        List<int> arrayOfPrimes = new List<int>();
+        SystemTime st = new SystemTime();
 
 
-
-        public Worker2(string path = null)
+        public ThreadsPool(string path = null)
         {
             this.path = path ?? @"D:\Doc2.docx";
         }
@@ -25,7 +24,7 @@ namespace threadPoll
         {
             if (app == null || IsApplicaionClosed)
                 app = new Application();
-            return app.Documents.Add(Visible: true);
+            return app.Documents.Add();
         }
 
         public void WriteToWord(Object stateInfo)
@@ -33,15 +32,12 @@ namespace threadPoll
             try
             {
                 document = OpenNewDoc();
-                Range range = document.Range();
-                FindPrimeNumbers();
-
-                var str = string.Join(", ", arrayOfPrimes);
-                range.Text = $"Prime numbers: {str}";
-
+                Range range = document.Range(); //object of range of text in the word doc
+                var str = string.Join(", ", FindPrimeNumbers());
+                range.Text = $"Prime numbers: {str} \n {chechSystemTime()}";
                 document.SaveAs(path);
                 document.Close();
-                CloseWord();                
+                CloseWord();
             }
             catch (Exception e)
             {
@@ -56,7 +52,8 @@ namespace threadPoll
         }
 
         public List<int> FindPrimeNumbers()
-        {
+        {            
+            List<int> arrayOfPrimes = new List<int>();
             int min = 1;
             int max = 30;
             int j;
@@ -72,35 +69,30 @@ namespace threadPoll
                     arrayOfPrimes.Add(i);
                 }
             }
+            
+            Console.WriteLine($"{ new string(' ', 70)} Work from thread pool...");
             foreach (int item in arrayOfPrimes)
             {
                 Thread.Sleep(500);
-
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{new string(' ', 70)}{item}");
             }
-            Console.WriteLine($"Thread {_thread.Name} is completed.");
-
             return arrayOfPrimes;
         }
 
         public void CreateThread(string threadName = null)
         {
-
-            if (_thread == null || _thread.ThreadState == ThreadState.Stopped)
-            {
-                _thread = new Thread(WriteToWord);
-                _thread.Name = threadName ?? "Worker2";
-                _thread.Start();
-            }
-            //ThreadPool.QueueUserWorkItem(new WaitCallback(WriteToWord));
-            ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadProc2));
-            ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadProc));
-            ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadProc3));
-
-            //Console.WriteLine($"Thread {_thread.Name} is running...");
+            ThreadPool.QueueUserWorkItem(new WaitCallback(WriteToWord));            
         }
 
-         private void ThreadProc(Object stateInfo)
+        public string chechSystemTime()
+        {
+            LibWrap.GetSystemTime(st);            
+            var date = $"{st.day}.{st.month}.{st.year} | {st.hour} : {st.minute}";
+            return date;
+        }
+
+        private void ThreadProc(Object stateInfo)
         {
             Console.WriteLine("Hello from the thread pool.");
             for (int i = 0; i < 5; i++)
@@ -119,16 +111,7 @@ namespace threadPoll
             }
         }
 
-        private void ThreadProc3(Object stateInfo)
-        {
-            Console.WriteLine("Hello from the thread pool.");
-            for (int i = 0; i < 30; i++)
-            {
-                Thread.Sleep(200);
-                Console.WriteLine($"{new string(' ', 60)}hi");
-            }
-        }
-
+        
         public void PauseOrStartThread()
         {
             if(_thread == null)
@@ -158,6 +141,5 @@ namespace threadPoll
                 Console.WriteLine($"Thread 2 is not created");
             }
         }
-
     }
 }
