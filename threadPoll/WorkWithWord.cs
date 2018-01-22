@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using Microsoft.Office.Interop.Word;
 
@@ -11,31 +12,31 @@ namespace threadPoll
         private bool IsApplicaionClosed = false;
         private object path;
 
-        //
-        Test test = new Test();
-
-        public WorkWithWord(string path = null)
+        //с помощью конструктора устанавливаем путь до файла
+        public WorkWithWord(string path)
         {
-            this.path = path ?? @"D:\Doc3.docx";
+            this.path = path;
         }
 
         public Document OpenNewDoc()
         {
             if (app == null || IsApplicaionClosed)
-                app = new Application();
-            return app.Documents.Add();
+                app = new Application(); //открываем новое приложение
+            return app.Documents.Add(); //открываем новый докумнт
         }
 
-        public void WriteToWord(Object stateInfo)
+        public void WriteToWord(string text)
         {
             try
             {
                 document = OpenNewDoc();
+                //объект диапазона текста
                 Range range = document.Range();
-                var str = string.Join(", ", test.hello());
-                range.Text = $"{str}";
+                var time = WinAPI.СhechSystemTime();
+                text += $"\n\n Edit Time: {time}";
+                range.Text = text; //пишем инфо в ворд
 
-
+                //сохраняем результат
                 document.SaveAs(path);
                 document.Close();
                 CloseWord();
@@ -46,6 +47,7 @@ namespace threadPoll
             }
         }
 
+        //закрываем приложение
         public void CloseWord()
         {
             app.Quit();

@@ -13,7 +13,9 @@ namespace threadPoll
         private bool IsApplicaionClosed = false;
         private object path;
         SystemTime st = new SystemTime();
-        
+
+        //DeskWallPaper dwp = new DeskWallPaper();
+
         public WorkWithThreads(string path = null)
         {
             this.path = path ?? @"D:\Doc1.docx";
@@ -33,7 +35,7 @@ namespace threadPoll
                 document = OpenNewDoc();
                 Range range = document.Range(); //object of range of text in the word doc
                 var str = string.Join(", ", ToSecondDegree());
-                range.Text = $"Prime numbers: {str} \n {chechSystemTime()}";
+                range.Text = $"The second degree of numbers: {str} \n {chechSystemTime()}";
                 document.SaveAs(path);
                 document.Close();
                 CloseWord();
@@ -52,28 +54,63 @@ namespace threadPoll
 
         public List<int> ToSecondDegree()
         {            
-            Console.WriteLine($"{new string(' ', 30)}Thread {_thread.Name} is running...");
+            Console.WriteLine($"Thread {_thread.Name} is running...");
             List<int> array = new List<int>();
-            for (int i = 0; i <= 10 ; i++)
+            for (int i = 0; i <= 20; i++)
             {
                 array.Add(i*i);
-                Thread.Sleep(100);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"{new string(' ', 30)}{i*i}");
-            }                 
+                Thread.Sleep(500);
+                //Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"{new string(' ', 10)}{i*i}");
+            }            
             return array;
         }
 
-        public void CreateThread(string threadName = null)
+        private void Hello(Object stateInfo)
+        {
+            WorkWithWord www = new WorkWithWord(@"D:\Doc1.docx");
+            string str = "";
+            for (int i = 0; i <= 20; i++)
+            {
+                Thread.Sleep(100);
+                str += "hello\n";
+                Console.WriteLine($"{new string(' ', 10)} Hello!");
+            }
+            //записываем результат в ворд
+            www.WriteToWord($"Table of third degree\n{str}");
+        }
+
+        public void CreateThread(Object stateInfo /*string threadName = null*/)
         {
             //if thread not created or completed
             if (_thread == null || _thread.ThreadState == ThreadState.Stopped)
             {
-                _thread = new Thread(WriteToWord);
-                _thread.Name = threadName ?? "Worker1";
+                _thread = new Thread(Hello);
+                _thread.Name = /*threadName ??*/ "Worker1";
                 _thread.Start();
-            }            
+            }           
         }
+
+        //public void ChangePic()
+        //{
+        //    SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, @"D:\zu6PBjylpow.jpg", SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
+        //}
+
+        
+        //public void AddThreadToList()
+        //{
+        //    List<Thread> threadList = new List<Thread>();
+
+        //    if (_thread == null || _thread.ThreadState == ThreadState.Stopped)
+        //    {
+        //        _thread = new Thread(WriteToWord);
+        //        _thread.Name = "Worker1";
+        //        _thread.Start();
+        //    }
+
+        //    threadList.Add(_thread);
+        //    Console.WriteLine("hello from my own thread pool");
+        //}
 
         public string chechSystemTime()
         {
@@ -104,11 +141,24 @@ namespace threadPoll
         {
             if (_thread != null)
             {
-                Console.WriteLine($"Thread {_thread.Name} status: {_thread.ThreadState.ToString()}");
+                try
+                {
+                    Console.WriteLine($"Thread {_thread.Name} status: {_thread.ThreadState.ToString()}");
+                    if (_thread.ThreadState != ThreadState.Stopped)
+                    {
+                        Console.WriteLine($"Thread is background: {_thread.IsBackground}");
+                        Console.WriteLine($"Thread is thread pool thread: {_thread.IsThreadPoolThread}");
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {
-                Console.WriteLine($"Thread 2 is not created");
+                Console.WriteLine($"Thread is not created");
             }
         }
     }

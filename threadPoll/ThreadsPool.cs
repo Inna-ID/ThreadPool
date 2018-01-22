@@ -1,61 +1,63 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.Office.Interop.Word;
+using System.Threading.Tasks;
 
 namespace threadPoll
 {
     class ThreadsPool
     {
         private Thread _thread;
-        private Application app;
-        private Document document;
-        private bool IsApplicaionClosed = false;
-        private object path;
-        SystemTime st = new SystemTime();
+        int workerThreads;
+        int portThreads;
+        WorkWithThreads wwt = new WorkWithThreads();
 
-
-        public ThreadsPool(string path = null)
+        public void AddToPool()
         {
-            this.path = path ?? @"D:\Doc2.docx";
+            ThreadPool.SetMinThreads(10, 0); //задаем мин. кол-во потоков в пуле
+            ThreadPool.SetMaxThreads(10, 0); //задаем мач. кол-во потоков в пуле
+            Console.WriteLine($"{ new string(' ', 40)} Work from thread pool...");
+            //добавляем задачи в пул потоков
+            ThreadPool.QueueUserWorkItem(new WaitCallback(FindPrimeNumbers));
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ToSecondDegree));
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ToThirdDegree));
+            Task.Run(() => ToThirdDegree(null));
+
+            CheckThreads();
         }
 
-        public Document OpenNewDoc()
+        public void CheckThreads()
         {
-            if (app == null || IsApplicaionClosed)
-                app = new Application();
-            return app.Documents.Add();
-        }
-
-        public void WriteToWord(Object stateInfo)
-        {
-            try
+            ThreadPool.GetAvailableThreads(out workerThreads, out portThreads);
+            int availableThreads = workerThreads;
+            if (availableThreads == 10)
             {
-                document = OpenNewDoc();
-                Range range = document.Range(); //object of range of text in the word doc
-                var str = string.Join(", ", FindPrimeNumbers());
-                range.Text = $"Prime numbers: {str} \n {chechSystemTime()}";
-                document.SaveAs(path);
-                document.Close();
-                CloseWord();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("tasks ends!");
             }
         }
 
-        public void CloseWord()
+        public void InfoAboutThreadsInPool()
         {
-            app.Quit();
-            IsApplicaionClosed = true;
+            //получаем максимального кол-ва потоков
+            ThreadPool.GetMaxThreads(out workerThreads, out portThreads);
+            int maxThreads = workerThreads;
+            Console.WriteLine($"Max threads in the thread pool: {workerThreads}");
+            //получаем доступное кол-ва потоков
+            ThreadPool.GetAvailableThreads(out workerThreads, out portThreads);
+            int availableThreads = workerThreads;
+            Console.WriteLine($"Available worker threads: {workerThreads}");
+            //пишем в консоль сколько потоков из пула используется
+            Console.WriteLine($"Threads count used in the pool: {maxThreads - availableThreads}");
+
         }
 
-        public List<int> FindPrimeNumbers()
-        {            
+        public void FindPrimeNumbers(Object stateInfo)
+        {
+            WorkWithWord www = new WorkWithWord(@"D:\Doc5.docx");
             List<int> arrayOfPrimes = new List<int>();
             int min = 1;
-            int max = 30;
+            int max = 100;
             int j;
 
             for (int i = min; i <= max; i++)
@@ -69,77 +71,49 @@ namespace threadPoll
                     arrayOfPrimes.Add(i);
                 }
             }
-            
-            Console.WriteLine($"{ new string(' ', 70)} Work from thread pool...");
+
             foreach (int item in arrayOfPrimes)
             {
                 Thread.Sleep(500);
-                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"{new string(' ', 70)}{item}");
             }
-            return arrayOfPrimes;
+            Console.WriteLine(Thread.CurrentThread.IsThreadPoolThread ? "yes" : "not ");//!!!!!!!!!!!
+            // пишем список протых чисел в ворд, разделяя элементы ,
+            www.WriteToWord($"Prime numbers\n{string.Join(", ", arrayOfPrimes)}");
         }
 
-        public void CreateThread(string threadName = null)
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(WriteToWord));            
-        }
 
-        public string chechSystemTime()
+        private void ToThirdDegree(Object stateInfo)
         {
-            LibWrap.GetSystemTime(st);            
-            var date = $"{st.day}.{st.month}.{st.year} | {st.hour} : {st.minute}";
-            return date;
-        }
-
-        private void ThreadProc(Object stateInfo)
-        {
-            Console.WriteLine("Hello from the thread pool.");
-            for (int i = 0; i < 5; i++)
-            {
-                Thread.Sleep(1000);
-                Console.Write(".");
-            }
-        }
-        private void ThreadProc2(Object stateInfo)
-        {
-            Console.WriteLine("Hello from the thread pool.");
-            for (int i = 0; i < 10; i++)
+            WorkWithWord www = new WorkWithWord(@"D:\Doc4.docx");
+            string strArray = "";
+            string str = "";             
+            for (int i = 0; i < 20; i++)
             {
                 Thread.Sleep(500);
-                Console.WriteLine($"{new string(' ', 50)} {i*i}");
+                str = $"i^3 = {i *  i *i}\n";
+                strArray += str;
+                Console.WriteLine($"{new string(' ', 30)} i^3 = {i * i * i}");
             }
+            //записываем результат в ворд
+            www.WriteToWord($"Table of third degree\n{strArray}");
         }
-
+        private void ToSecondDegree(Object stateInfo)
+        {
+            WorkWithWord www = new WorkWithWord(@"D:\Doc3.docx");
+            string strArray = "";
+            string str = "";
+            for (int i = 0; i < 20; i++)
+            {
+                Thread.Sleep(500);
+                str = $"i^2 = {i * i}\n";
+                strArray += str;
+                Console.WriteLine($"{new string(' ', 50)} {str}");
+            }
+            //записываем результат в ворд
+            www.WriteToWord($"Table of second degree\n{strArray}");
+        }
         
-        public void PauseOrStartThread()
-        {
-            if(_thread == null)
-            {
-                Console.WriteLine("The thread can not be paused because it is not created");
-                return;
-            }
-            if (_thread.ThreadState == ThreadState.WaitSleepJoin)
-            {
-                _thread.Suspend();
-                Console.WriteLine($"Thread {_thread.Name} suspended");
-            }
-            else if(_thread.IsAlive && _thread.ThreadState == ThreadState.Suspended)
-            {
-                _thread.Resume();
-            }
-        }
 
-        public void CheckStatus()
-        {
-            if (_thread != null)
-            {
-                Console.WriteLine($"Thread {_thread.Name} status: {_thread.ThreadState.ToString()}");
-            }
-            else
-            {
-                Console.WriteLine($"Thread 2 is not created");
-            }
-        }
     }
 }

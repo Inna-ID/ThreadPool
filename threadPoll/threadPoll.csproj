@@ -42,11 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeskWallPaper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTime.cs" />
-    <Compile Include="Test.cs" />
-    <Compile Include="Threads.cs" />
+    <Compile Include="WorkWithThreads.cs" />
     <Compile Include="ThreadsPool.cs" />
     <Compile Include="WorkWithWord.cs" />
   </ItemGroup>
