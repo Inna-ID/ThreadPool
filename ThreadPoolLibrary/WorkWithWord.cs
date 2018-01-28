@@ -3,9 +3,9 @@ using System.Text;
 using System.Threading;
 using Microsoft.Office.Interop.Word;
 
-namespace threadPoll
+namespace ThreadPoolLibrary
 {
-    class WorkWithWord
+    public class WorkWithWord
     {
         private Application app;
         private Document document;

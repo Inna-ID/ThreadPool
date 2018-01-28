@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Office.Interop.Word;
 
-namespace threadPoll
+namespace ThreadPoolLibrary
 {
-    class WorkWithThreads
+    public class WorkWithThreads
     {
         private Thread _thread;
         private Application app;
@@ -13,8 +13,6 @@ namespace threadPoll
         private bool IsApplicaionClosed = false;
         private object path;
         SystemTime st = new SystemTime();
-
-        //DeskWallPaper dwp = new DeskWallPaper();
 
         public WorkWithThreads(string path = null)
         {
@@ -90,27 +88,6 @@ namespace threadPoll
                 _thread.Start();
             }           
         }
-
-        //public void ChangePic()
-        //{
-        //    SystemParametersInfo(SPI_SETDESKWALLPAPER, 0, @"D:\zu6PBjylpow.jpg", SPIF_UPDATEINIFILE | SPIF_SENDWININICHANGE);
-        //}
-
-        
-        //public void AddThreadToList()
-        //{
-        //    List<Thread> threadList = new List<Thread>();
-
-        //    if (_thread == null || _thread.ThreadState == ThreadState.Stopped)
-        //    {
-        //        _thread = new Thread(WriteToWord);
-        //        _thread.Name = "Worker1";
-        //        _thread.Start();
-        //    }
-
-        //    threadList.Add(_thread);
-        //    Console.WriteLine("hello from my own thread pool");
-        //}
 
         public string chechSystemTime()
         {

@@ -1,0 +1,8 @@
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\bin\Debug\ThreadPoolLibrary.dll
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\bin\Debug\ThreadPoolLibrary.pdb
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\ThreadPoolLibrary.csprojResolveAssemblyReference.cache
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\Interop.Office.dll
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\ThreadPoolLibrary.csproj.ResolveComReference.cache
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\ThreadPoolLibrary.csproj.CoreCompileInputs.cache
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\ThreadPoolLibrary.dll
+D:\C#\ThreadPool_CourseProject\ThreadPoolLibrary\obj\Debug\ThreadPoolLibrary.pdb

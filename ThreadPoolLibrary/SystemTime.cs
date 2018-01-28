@@ -2,7 +2,7 @@
 using System.Text;
 using System.Runtime.InteropServices; //для использования Win API
 
-namespace threadPoll
+namespace ThreadPoolLibrary
 {
     [StructLayout(LayoutKind.Sequential)]
     public class SystemTime

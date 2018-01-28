@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27205.2004
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "threadPoll", "threadPoll\threadPoll.csproj", "{62AB36F9-1D80-46CB-911D-770C3A971DDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadPoolLibrary", "ThreadPoolLibrary\ThreadPoolLibrary.csproj", "{53D4B082-8DE8-4BFB-B3E3-CF427BCE347D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{62AB36F9-1D80-46CB-911D-770C3A971DDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62AB36F9-1D80-46CB-911D-770C3A971DDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62AB36F9-1D80-46CB-911D-770C3A971DDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53D4B082-8DE8-4BFB-B3E3-CF427BCE347D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53D4B082-8DE8-4BFB-B3E3-CF427BCE347D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53D4B082-8DE8-4BFB-B3E3-CF427BCE347D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53D4B082-8DE8-4BFB-B3E3-CF427BCE347D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
